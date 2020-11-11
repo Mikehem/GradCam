@@ -37,6 +37,7 @@ from saliency.guidedBackprop import GuidedBackprop, deprocess_image
 from saliency.utils import preprocess, predict, predict_5, SAMPLE_DIR, array2bytes, DECODE, INV_MAP
 from saliency.models import load_ResNet50PlusFC, load_VanilaResNet50, load_ResNet50, load_ResNet50V2
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
+from pathlib import Path
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 # Input shape, defined by the model (model.input_shape)
@@ -44,6 +45,11 @@ H, W = 224, 224
 
 CUSTOM_CLASS_DECODE = {0:"Cat", 1:"Dog"}
 CUSTOM_CLASS_INV_MAP = {"Cat": 0, "Dog": 1}
+
+def read_markdown_file(markdown_file):
+    return Path(markdown_file).read_text()
+
+intro_markdown = read_markdown_file(os.path.join(BASE_PATH,"../README.md"))
 
 def load_image(x, preprocess=True):
     """Load and preprocess image."""
@@ -562,7 +568,7 @@ def Saliency_VGG16():
                                         cls=selected_class, visualize=True, save=False)
     
 def main():
-    st.title("Saliency Mapping for CV models")
+    #st.title("Saliency Mapping for CV models")
     # Render the readme as markdown using st.markdown.
     #readme_text = st.markdown("Instructions to run app..")
     # Once we have the dependencies, add a selector for the app mode on the sidebar.
@@ -580,7 +586,7 @@ def main():
     #    result_load = video_analyser()
     else:
         st.sidebar.success('To continue select the "Model".')
-        
+        st.markdown(intro_markdown, unsafe_allow_html=True)
 if __name__ == "__main__":
     main() 
 
